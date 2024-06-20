@@ -1,4 +1,3 @@
-
 using UserApi.Models;
 using System.Collections.Generic;
 
@@ -11,5 +10,6 @@ namespace UserApi.Repositories
         void Add(User user);
         void Update(User user);
         void Delete(int id);
+        User GetByUsername(string username);
     }
 }

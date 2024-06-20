@@ -1,4 +1,3 @@
-
 using UserApi.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +13,7 @@ namespace UserApi.Repositories
             return _users;
         }
 
-        public User GetById(int id)
+        public User? GetById(int id) // Nota el "?" indicando que puede ser nulo
         {
             return _users.FirstOrDefault(u => u.Id == id);
         }
@@ -45,6 +44,11 @@ namespace UserApi.Repositories
             {
                 _users.Remove(user);
             }
+        }
+
+        public User? GetByUsername(string username) // Nota el "?" indicando que puede ser nulo
+        {
+            return _users.FirstOrDefault(u => u.Username == username);
         }
     }
 }

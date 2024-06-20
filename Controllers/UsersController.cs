@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Mvc;
 using UserApi.Models;
 using UserApi.Repositories;
@@ -41,6 +40,17 @@ namespace UserApi.Controllers
             return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
         }
 
+        [HttpPost("login")]
+        public ActionResult<User> Login([FromBody] User loginUser)
+        {
+            var user = _userRepository.GetByUsername(loginUser.Username);
+            if (user == null || user.Password != loginUser.Password)
+            {
+                return Unauthorized();
+            }
+            return Ok(user);
+        }
+
         [HttpPut("{id}")]
         public IActionResult Update(int id, User user)
         {
@@ -55,7 +65,13 @@ namespace UserApi.Controllers
                 return NotFound();
             }
 
-            _userRepository.Update(user);
+            existingUser.Username = user.Username;
+            existingUser.Password = user.Password;
+            existingUser.Is2FAEnabled = user.Is2FAEnabled;
+            existingUser.Key = user.Key;
+            existingUser.Counter = user.Counter;
+
+            _userRepository.Update(existingUser);
             return NoContent();
         }
 
